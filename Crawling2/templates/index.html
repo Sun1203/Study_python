@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>먹방 유투버</h1>
+    <br><hr><br>
+    <button onclick="data_check()">먹방유투버정보보기!</button><br>
+    <button onclick="sigak()">DataFrame</button><br>
+    <button onclick="plot()">차트시각화</button><br>
+
+    <br><hr><br>
+    <div id="demo"></div>
+    
+    <script>
+        function data_check() {
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    data = this.responseText;
+                    console.log(data)
+
+                    
+                    document.getElementById("demo").innerText = data;
+                };
+            };
+            xhttp.open("GET", "/box");
+            xhttp.send();
+        }
+
+        function sigak() {
+
+
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    data = this.responseText;
+                    // data = eval(data);
+                    data = JSON.parse(data);
+                    
+                    console.log(data)
+
+                    
+                    document.getElementById("demo").innerHTML = data;
+                };
+            };
+            xhttp.open("GET", "/pan");
+            xhttp.send();
+        }
+
+
+        function plot() {
+
+            const xhttp = new XMLHttpRequest();
+
+            xhttp.open("post", "/plot");
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send();
+  
+            xhttp.onreadystatechange = function () {
+
+                if (this.readyState == 4 && this.status == 200) {
+                    data = this.responseText;
+                    data = JSON.parse(data)
+                    document.getElementById("demo").innerHTML = '<img src="'+data.img01+'">';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
